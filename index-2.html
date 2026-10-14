@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ely Services — Gestion des activités</title>
+<meta name="theme-color" content="#0b2447">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b2447'/%3E%3Ctext x='32' y='45' font-size='38' font-weight='700' text-anchor='middle' fill='white' font-family='Arial'%3EE%3C/text%3E%3C/svg%3E">
+<style>
+:root{--navy:#0b2447;--n2:#19376d;--bg:#eef2f8;--c:#fff;--t:#0f1b2d;--m:#64748b;--p:#1d4ed8;--g:#059669;--r:#dc2626;--b:#e2e8f0;--sh:0 1px 2px rgba(15,27,45,.06),0 6px 18px rgba(15,27,45,.07);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0a1220;--c:#111c30;--t:#e6edf7;--m:#8fa0b8;--p:#5b8def;--g:#34d399;--r:#f87171;--b:#223149;--sh:0 1px 2px rgba(0,0,0,.4),0 6px 18px rgba(0,0,0,.3)}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--t);font:15px/1.4 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.top{background:var(--navy);color:#fff;padding:14px 16px 10px;display:flex;align-items:center;gap:12px}
+.logo{width:40px;height:40px;border-radius:12px;background:#fff;color:var(--navy);display:grid;place-items:center;font-weight:800;font-size:21px;flex:none}
+.top b{font-size:17px;letter-spacing:.3px}.top small{display:block;opacity:.7;font-size:12px}
+.out{margin-left:auto;background:rgba(255,255,255,.14);border:0;color:#fff;border-radius:10px;padding:8px 13px;font-size:13px}
+nav{position:sticky;top:0;z-index:5;display:flex;gap:2px;overflow-x:auto;padding:0 10px 10px;background:var(--navy);scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav button{flex:none;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:68px;background:none;border:0;color:rgba(255,255,255,.65);padding:8px 10px;border-radius:12px;font-size:18px}
+nav button span{font-size:11px;font-weight:600}
+nav button.on{background:rgba(255,255,255,.16);color:#fff}
+main{padding:14px 14px 48px;max-width:720px;margin:auto}
+.card{background:var(--c);border:1px solid var(--b);border-radius:16px;padding:14px;margin:10px 0;box-shadow:var(--sh)}
+.stats{display:flex;gap:8px;margin-top:2px}
+.stats div{flex:1;min-width:0;background:var(--c);border:1px solid var(--b);border-top:3px solid var(--b);border-radius:16px;padding:11px 8px;text-align:center;box-shadow:var(--sh)}
+.stats .posb{border-top-color:var(--g)}.stats .negb{border-top-color:var(--r)}
+.stats small{display:block;color:var(--m);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
+.stats b{font-size:15px;word-break:break-word}
+input,select{width:100%;padding:12px;margin:5px 0;border:1px solid var(--b);border-radius:12px;background:var(--bg);color:var(--t);font-size:15px;font-family:inherit}
+input:focus,select:focus{outline:2px solid var(--p);outline-offset:0;border-color:transparent}
+button{font:inherit;cursor:pointer}
+.add{width:100%;padding:13px;margin-top:8px;border:0;border-radius:12px;background:linear-gradient(135deg,#1e40af,#2563eb);color:#fff;font-weight:700;font-size:15px;box-shadow:0 4px 12px rgba(37,99,235,.3)}
+.add:active{transform:scale(.99)}
+.r{display:flex;gap:8px;margin-top:10px}.r input{margin:0}.r button{border:0;border-radius:12px;background:var(--g);color:#fff;padding:0 16px;font-weight:700}
+.r button.x,.x{background:none!important;color:var(--r)!important;font-size:22px;border:0;padding:0 4px}
+.m{color:var(--m);font-size:13px}.neg{color:var(--r)}.pos{color:var(--g)}
+.tag{background:var(--r);color:#fff;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}td,th{padding:7px 4px;border-bottom:1px solid var(--b);text-align:right}th{color:var(--m);font-size:11px;text-transform:uppercase}td:first-child,th:first-child{text-align:left}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.seg{display:flex;gap:6px;margin:10px 0}.seg button{flex:1;padding:11px 4px;border:1px solid var(--b);border-radius:12px;background:var(--c);color:var(--t);font-weight:600;box-shadow:var(--sh)}.seg button.on{background:var(--p);color:#fff;border-color:var(--p)}
+body.auth{background:linear-gradient(160deg,var(--navy),#16407d 60%,#1d4ed8) fixed}
+.auth .top,.auth nav{display:none}
+.auth main{max-width:none;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 18px}
+.login{width:100%;max-width:400px;text-align:center}
+.login .logo{width:76px;height:76px;font-size:40px;border-radius:24px;margin:auto;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.login h1{color:#fff;margin:14px 0 4px;font-size:30px;letter-spacing:.5px}
+.login .tg{color:rgba(255,255,255,.75);font-size:13px;margin:0 0 24px}
+.lcard{background:var(--c);color:var(--t);border-radius:22px;padding:22px;text-align:left;box-shadow:0 24px 60px rgba(0,0,0,.4)}
+.lcard h2{margin:0 0 4px;font-size:20px}.lcard label{display:block;margin-top:12px;font-size:12px;font-weight:700;color:var(--m);text-transform:uppercase;letter-spacing:.4px}
+.err{color:var(--r);margin-top:10px;font-size:13px;min-height:18px}
+.foot{color:rgba(255,255,255,.55);font-size:12px;margin-top:20px}
+nav{display:none}
+.bar{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:12px;background:var(--bg);padding:4px 0 10px}
+.bar button{background:var(--c);border:1px solid var(--b);border-radius:12px;padding:9px 14px;font-weight:600;color:var(--t);box-shadow:var(--sh)}
+.bar b{font-size:18px}
+.hero{background:linear-gradient(135deg,var(--navy),#1d4ed8);color:#fff;border-radius:20px;padding:20px;box-shadow:0 10px 28px rgba(29,78,216,.35)}
+.hero small{opacity:.8;text-transform:uppercase;letter-spacing:.5px;font-size:12px}
+.hero b{display:block;font-size:30px;margin-top:4px}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(min-width:600px){.tiles{grid-template-columns:repeat(3,1fr)}}
+.tile{background:var(--c);border:1px solid var(--b);border-radius:18px;padding:16px 12px;text-align:left;box-shadow:var(--sh);color:var(--t);display:flex;flex-direction:column;gap:3px}
+.tile:active{transform:scale(.98)}
+.ti{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;font-size:24px;background:var(--tc);margin-bottom:8px}
+.tile b{font-size:16px}.tile small{color:var(--m);font-size:12px}
+.lh{font-weight:700;color:var(--m);font-size:12px;text-transform:uppercase;letter-spacing:.5px;margin:16px 2px 6px}
+.empty{text-align:center;color:var(--m);padding:28px 10px;font-size:14px}
+.scroll{max-height:60vh;overflow-y:auto;padding:2px 6px 2px 0;scrollbar-width:thin;scrollbar-color:var(--m) transparent}
+.scroll::-webkit-scrollbar{width:6px}.scroll::-webkit-scrollbar-thumb{background:var(--m);border-radius:6px}
+.dd{position:relative;margin:4px 0 8px}
+.ddb{width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--c);border:1px solid var(--b);border-radius:14px;padding:13px 14px;color:var(--t);box-shadow:var(--sh);font-size:15px}
+.ddl{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:9;max-height:260px;background:var(--c);border:1px solid var(--b);border-radius:14px;box-shadow:0 12px 30px rgba(0,0,0,.25);padding:6px}
+.ddl button{display:block;width:100%;text-align:left;background:none;border:0;color:var(--t);padding:12px;border-radius:10px;font-size:15px}
+.ddl button.on{background:var(--p);color:#fff}
+@media print{.top,.bar,.dd,.hero,.add{display:none!important}.scroll{max-height:none;overflow:visible}body{background:#fff}}
+.lnk{background:none;border:0;color:var(--p);font-weight:600;width:100%;padding:12px 0 0;text-align:center}
+</style><script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.31/dist/jspdf.plugin.autotable.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+</head><body>
+<header class="top"><div class="logo">E</div><div><b>Ely Services</b><small id="st">Gestion des activités</small></div><button class="out" onclick="logout()">Quitter</button></header><nav id="nav"></nav><main id="main"></main>
+<script>
+const KINDS=['caisse','commerce','reseaux','moulin','dettes','prets'];
+let LOCAL;try{LOCAL=JSON.parse(localStorage.getItem('suivi'))}catch(e){}
+const CURS=['FC','USD'],SETS={FC:{},USD:{}};CURS.forEach(c=>KINDS.forEach(k=>SETS[c][k]=[]));
+let cu='FC',S=SETS.FC;try{if(localStorage.getItem('ely_cu')=='USD'){cu='USD';S=SETS.USD}}catch(e){}
+let dirty=false;const save=()=>{dirty=true;status('sync');sync()};
+const fm=(n,c)=>{const v=+n||0;return c=='USD'?v.toLocaleString('fr-FR',{maximumFractionDigits:2})+' $':Math.round(v).toLocaleString('fr-FR')+' FC'};
+const f=n=>fm(n,cu);
+const td=()=>new Date().toISOString().slice(0,10);
+const sum=a=>a.reduce((s,x)=>s+x.m,0);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const $=id=>document.getElementById(id);
+const val=id=>$(id).value.trim();
+let tab='home';
+const TABS={caisse:'Caisse',commerce:'Commerce',reseaux:'Réseaux',moulin:'Moulin',dettes:'Dettes',prets:'Prêts',histo:'Historique',params:'Paramètres'};
+const IC={caisse:'💰',commerce:'🛒',reseaux:'📱',moulin:'⚡',dettes:'📋',prets:'🏦',histo:'🕘',params:'⚙️'};
+const CL={caisse:'#059669',commerce:'#2563eb',reseaux:'#7c3aed',moulin:'#d97706',dettes:'#dc2626',prets:'#0891b2',histo:'#475569',params:'#64748b'};
+const sc=h=>h?`<div class="lh">Enregistrements</div><div class="scroll">${h}</div>`:`<div class="empty">Aucun enregistrement pour le moment</div>`;
+const go=k=>{tab=k;render();scrollTo(0,0)};
+const stats=a=>'<div class="stats">'+a.map(([l,v,c])=>`<div class="${c?c+'b':''}"><small>${l}</small><b class="${c||''}">${f(v)}</b></div>`).join('')+'</div>';
+function del(k,i){if(confirm('Supprimer ?')){S[k].splice(i,1);save();render()}}
+function add(k,o){if(!(o.m>0)){alert('Montant invalide');return}S[k].push(o);save();render()}
+const RES={orange:'Orange Money',airtel:'Airtel Money',vodafone:'Vodafone'};
+const OPS={dep:['Dépôt client',-1],ret:['Retrait client',1],env:['Envoi',-1],app:['Approvisionnement / solde',1]};
+let cs='acc',un='orange',hs='all',hf='',ht='',hopen=false;
+const UN={orange:'Orange',airtel:'Airtel',africell:'Africell',vodacom:'Vodacom'};
+const RB={caisse:'Caisse',commerce:'Commerce',reseaux:'Réseaux',moulin:'Moulin',dettes:'Dettes',prets:'Prêts'};
+const HO=[['all','Tout'],['caisse','Caisse (tous les mouvements)'],['commerce','Commerce (tout)'],['com_acc','Commerce · Accessoires'],['com_uni','Commerce · Unités'],['com_bout','Commerce · Boutique'],['reseaux','Réseaux'],['moulin','Moulin'],['dettes','Dettes'],['prets','Prêts']];
+const hok=e=>(hs=='all'||e.s==hs||(hs=='caisse'&&(e.s=='commerce'||e.s=='reseaux'))||(hs.slice(0,4)=='com_'&&e.s=='commerce'&&e.sub==hs.slice(4)))&&(!hf||e.d>=hf)&&(!ht||e.d<=ht);
+function pdf(){const J=window.jspdf;if(!J||!J.jsPDF){alert('Le module PDF n\u2019a pas pu se charger. Utilisez le menu du navigateur : Imprimer > Enregistrer au format PDF.');window.print();return}
+const E=evts().filter(hok),n=x=>String(x).replace(/[\u202f\u00a0]/g,' '),pm=E.filter(e=>e.g>0).reduce((a,e)=>a+e.m,0),mm=E.filter(e=>e.g<0).reduce((a,e)=>a+e.m,0);
+const d=new J.jsPDF();if(typeof d.autoTable!='function'){window.print();return}
+d.setFillColor(11,36,71);d.rect(0,0,210,28,'F');d.setTextColor(255);d.setFontSize(18);d.text('Ely Services',14,13);d.setFontSize(10);d.text('Historique des activités - '+(cu=='USD'?'Dollars ($)':'Francs congolais (FC)'),14,21);
+d.setTextColor(40);d.text('Rubrique : '+HO.find(o=>o[0]==hs)[1].replace('·','-')+'   |   Période : '+(hf||'début')+' au '+(ht||'aujourd\'hui')+'   |   Édité le '+td(),14,36);
+d.text('Entrées : '+n(f(pm))+'    Sorties : '+n(f(mm))+'    Solde : '+n(f(pm-mm)),14,43);
+d.autoTable({startY:49,head:[['Date','Rubrique','Libellé','Entrée','Sortie']],body:E.map(e=>[e.d,RB[e.s],n(e.l+(e.g==0?' - '+f(e.m):'')).replace('×','x'),e.g>0?n(f(e.m)):'',e.g<0?n(f(e.m)):'']),headStyles:{fillColor:[11,36,71]},styles:{fontSize:9},columnStyles:{3:{halign:'right'},4:{halign:'right'}},alternateRowStyles:{fillColor:[240,244,250]}});
+d.save('historique-ely-services-'+cu+'-'+td()+'.pdf')}
+function evts(){const E=[],p=(s,d,l,m,g,sub)=>E.push({s,d,l,m,g,sub});
+S.caisse.forEach(x=>p('caisse',x.d,x.l||'Caisse',x.m,x.t=='in'?1:-1));
+S.commerce.forEach(x=>p('commerce',x.d,(x.t=='achat'?'Achat ':'Vente ')+x.p+' × '+x.q,x.q*x.u,x.t=='achat'?-1:1,x.r?'uni':(x.c||'acc')));
+S.reseaux.forEach(x=>p('reseaux',x.d,OPS[x.o][0]+' '+RES[x.n],x.m,-OPS[x.o][1]));
+S.moulin.forEach(x=>{p('moulin',x.d,'Recharge '+x.l+' (attendu '+f(x.m)+')',x.m,0);x.p.forEach(y=>p('moulin',y.d,'Encaissé · '+x.l,y.m,1))});
+S.dettes.forEach(x=>{p('dettes',x.d,'Dette '+x.l+(x.o?' · '+x.o:''),x.m,0);x.p.forEach(y=>p('dettes',y.d,'Remboursé · '+x.l,y.m,1))});
+S.prets.forEach(x=>{p('prets',x.d,'Prêt à '+x.n,x.m,-1);sch(x).forEach((e,j)=>{if(x.pd&&x.pd[j])p('prets',e.dt,'Échéance payée · '+x.n,e.t,1)})});
+return E.sort((a,b)=>a.d<b.d?1:a.d>b.d?-1:0)}
+const cashOf=T=>T.caisse.reduce((s,x)=>s+(x.t=='in'?x.m:-x.m),0)+T.commerce.reduce((s,x)=>s+(x.t=='achat'?-1:1)*x.q*x.u,0)+T.reseaux.reduce((s,x)=>s-OPS[x.o][1]*x.m,0);
+const cbar=()=>`<div class="seg"><button class="${cu=='FC'?'on':''}" onclick="setCu('FC')">Francs (FC)</button><button class="${cu=='USD'?'on':''}" onclick="setCu('USD')">Dollars ($)</button></div>`;
+function setCu(c){cu=c;S=SETS[c];try{localStorage.setItem('ely_cu',c)}catch(e){}render()}
+function exportJson(){const b=new Blob([JSON.stringify({date:td(),FC:SETS.FC,USD:SETS.USD},null,1)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='sauvegarde-ely-services-'+td()+'.json';a.click()}
+function resetData(sc){const lab=sc=='all'?'TOUTES vos données (francs et dollars)':'les données en '+(cu=='USD'?'dollars':'francs');
+if(!confirm('Effacer '+lab+' ? Cette action est définitive.'))return;
+if((prompt('Tapez SUPPRIMER pour confirmer')||'').trim().toUpperCase()!=='SUPPRIMER'){alert('Annulé : rien n’a été effacé.');return}
+(sc=='all'?CURS:[cu]).forEach(c=>KINDS.forEach(k=>{SETS[c][k].length=0}));save();render()}
+const V={
+home(){const cb=cashOf(S),oc=cu=='FC'?'USD':'FC',ob=cashOf(SETS[oc]),
+due=S.dettes.reduce((s,x)=>s+x.m-sum(x.p),0),rest=S.prets.reduce((s,x)=>s+sch(x).reduce((a,e,j)=>a+(x.pd&&x.pd[j]?0:e.t),0),0),
+sub={caisse:'Solde '+f(cb),commerce:S.commerce.length+' op\u00e9ration(s)',reseaux:S.reseaux.length+' op\u00e9ration(s)',moulin:S.moulin.length+' recharge(s)',dettes:'D\u00fb '+f(due),prets:'\u00c0 recevoir '+f(rest),histo:evts().length+' op\u00e9ration(s)',params:'Devises, sauvegarde'};
+return impBanner()+`<div class="hero"><small>Solde en caisse · ${cu=='USD'?'Dollars':'Francs congolais'}</small><b>${f(cb)}</b><small style="display:block;margin-top:6px">${oc=='USD'?'Dollars':'Francs congolais'} : ${fm(ob,oc)}</small></div><div class="lh">Services</div><div class="tiles">${Object.keys(TABS).map(k=>`<button class="tile" style="--tc:${CL[k]}" onclick="go('${k}')"><span class="ti">${IC[k]}</span><b>${TABS[k]}</b><small>${sub[k]}</small></button>`).join('')}</div>`},
+caisse(){const L=[...S.caisse.map((x,i)=>({...x,i,o:0})),...S.commerce.map(x=>({t:x.t=='achat'?'out':'in',l:(x.t=='achat'?'Achat ':'Vente ')+x.p+' · auto',m:x.q*x.u,d:x.d,a:'Commerce',o:1})),...S.reseaux.map(x=>({t:OPS[x.o][1]>0?'out':'in',l:OPS[x.o][0]+' '+RES[x.n]+' · auto',m:x.m,d:x.d,a:'Réseaux',o:2}))].sort((p,q)=>p.d<q.d?-1:p.d>q.d?1:p.o-q.o);
+const e=sum(L.filter(x=>x.t=='in')),s=sum(L.filter(x=>x.t=='out'));
+return stats([['Entrées',e,'pos'],['Sorties',s,'neg'],['Solde',e-s]])+
+`<div class="m" style="margin:8px 2px">Les lignes « auto » viennent des onglets Commerce et Réseaux.</div><div class="card"><select id="a"><option value="in">Entrée d'argent</option><option value="out">Sortie d'argent</option></select><input id="b" placeholder="Libellé"><input id="c" type="number" inputmode="decimal" placeholder="Montant"><input id="d" type="date" value="${td()}"><button class="add" onclick="add('caisse',{t:val('a'),l:val('b'),m:+val('c'),d:val('d')})">Ajouter</button></div>`+
+sc(L.map((x,i)=>`<div class="card row"><div><b>${esc(x.l||'—')}</b><div class="m">${x.d}</div></div><div class="${x.t=='in'?'pos':'neg'}">${x.t=='in'?'+':'−'}${f(x.m)}<button class="x" onclick="${x.a?`alert('Automatique : à modifier dans l’onglet ${x.a}')`:`del('caisse',${x.i})`}">×</button></div></div>`).reverse().join(''))},
+commerce(){return `<div class="seg"><button class="${cs=='acc'?'on':''}" onclick="cs='acc';render()">Accessoires</button><button class="${cs=='uni'?'on':''}" onclick="cs='uni';render()">Unités</button><button class="${cs=='bout'?'on':''}" onclick="cs='bout';render()">Boutique</button></div>`+(cs=='uni'?V.uni():V.acc(cs))},
+uni(){const C=S.commerce.map((x,i)=>({...x,i})).filter(x=>x.r),st=k=>C.filter(x=>x.r==k).reduce((s,x)=>s+(x.t=='achat'?x.q:-x.q),0),L=C.filter(x=>x.r==un),tot=t=>L.filter(x=>x.t==t).reduce((s,x)=>s+x.q*x.u,0);
+return `<div class="seg">${Object.keys(UN).map(k=>`<button class="${k==un?'on':''}" onclick="un='${k}';render()">${UN[k]}<br><small>${st(k)}</small></button>`).join('')}</div>`+
+`<div class="card row"><b>Stock ${UN[un]}</b><b class="${st(un)<0?'neg':''}">${st(un)} unités</b></div>`+
+stats([['Achats',tot('achat'),'neg'],['Ventes',tot('vente'),'pos'],['Différence',tot('vente')-tot('achat')]])+
+`<div class="card"><select id="a"><option value="achat">Achat d'unités</option><option value="detail">Vente au détail</option><option value="gros">Vente en gros</option></select><input id="c" type="number" inputmode="decimal" placeholder="Nombre d'unités"><input id="e" type="number" inputmode="decimal" placeholder="Prix par unité"><input id="d" type="date" value="${td()}"><button class="add" onclick="addCu()">Enregistrer</button></div>`+
+sc(L.map(x=>`<div class="card row"><div><b>${x.t=='achat'?'Achat':x.g=='gros'?'Vente gros':'Vente détail'}</b> <span class="m">× ${x.q} à ${f(x.u)}</span><div class="m">${x.d}</div></div><div class="${x.t=='achat'?'neg':'pos'}">${x.t=='achat'?'−':'+'}${f(x.q*x.u)}<button class="x" onclick="del('commerce',${x.i})">×</button></div></div>`).reverse().join(''))},
+acc(c){const C=S.commerce.map((x,i)=>({...x,i})).filter(x=>!x.r&&(x.c||'acc')==c),a=C.filter(x=>x.t=='achat'),v=C.filter(x=>x.t=='vente'),tot=l=>l.reduce((s,x)=>s+x.q*x.u,0);
+const names=[...new Set(C.map(x=>x.p))],stock=names.map(n=>[n,C.filter(x=>x.p==n).reduce((s,x)=>s+(x.t=='achat'?x.q:-x.q),0)]);
+return stats([['Achats',tot(a),'neg'],['Ventes',tot(v),'pos'],['Différence',tot(v)-tot(a)]])+
+`<div class="card"><b>Stock ${c=='bout'?'boutique':'accessoires'}</b>`+(stock.length?stock.map(([n,q])=>`<div class="row"><span>${esc(n)}</span><b class="${q<0?'neg':''}">${q}</b></div>`).join(''):'<div class="m">Aucun produit enregistré</div>')+`</div>`+
+`<div class="card"><select id="a"><option value="achat">Achat (j'achète)</option><option value="detail">Vente au détail</option><option value="gros">Vente en gros</option></select><input id="b" list="pl" placeholder="${c=='bout'?'Article de la boutique':'Produit (accessoire...)'}"><datalist id="pl">${names.map(n=>`<option value="${esc(n)}">`).join('')}</datalist><input id="c" type="number" inputmode="decimal" placeholder="Quantité"><input id="e" type="number" inputmode="decimal" placeholder="Prix unitaire"><input id="d" type="date" value="${td()}"><button class="add" onclick="addCo()">Enregistrer</button></div>`+
+sc(C.map((x,i)=>`<div class="card row"><div><b>${esc(x.p)}</b> <span class="m">× ${x.q} à ${f(x.u)}</span><div class="m">${x.d} · ${x.t=='achat'?'Achat':x.g=='gros'?'Vente gros':'Vente détail'}</div></div><div class="${x.t=='achat'?'neg':'pos'}">${x.t=='achat'?'−':'+'}${f(x.q*x.u)}<button class="x" onclick="del('commerce',${x.i})">×</button></div></div>`).reverse().join(''))},
+reseaux(){const bal=k=>S.reseaux.filter(x=>x.n==k).reduce((s,x)=>s+x.m*OPS[x.o][1],0);
+return stats(Object.keys(RES).map(k=>[RES[k].split(' ')[0],bal(k),bal(k)<0?'neg':'']))+
+`<div class="card"><select id="a">${Object.keys(RES).map(k=>`<option value="${k}">${RES[k]}</option>`).join('')}</select><select id="b">${Object.keys(OPS).map(k=>`<option value="${k}">${OPS[k][0]} (${OPS[k][1]>0?'+':'−'})</option>`).join('')}</select><input id="c" type="number" inputmode="decimal" placeholder="Montant"><input id="d" type="date" value="${td()}"><button class="add" onclick="add('reseaux',{n:val('a'),o:val('b'),m:+val('c'),d:val('d')})">Enregistrer</button></div>`+
+sc(S.reseaux.map((x,i)=>`<div class="card row"><div><b>${RES[x.n]}</b> · ${OPS[x.o][0]}<div class="m">${x.d}</div></div><div class="${OPS[x.o][1]>0?'pos':'neg'}">${OPS[x.o][1]>0?'+':'−'}${f(x.m)}<button class="x" onclick="del('reseaux',${i})">×</button></div></div>`).reverse().join(''))},
+params(){return `<div class="card"><b>Compte</b><div class="m">${esc(EMAIL||'')}</div><button class="add" style="background:var(--navy)" onclick="logout()">Se déconnecter</button></div>
+<div class="card"><b>Devises</b><div class="m">Francs congolais (FC) et dollars américains ($). Choisissez la devise avec les deux boutons en haut de chaque page : tout ce que vous voyez et enregistrez est dans cette devise.</div></div>
+<div class="card"><b>Sauvegarde</b><div class="m">Téléchargez une copie de toutes vos données (FC et $).</div><button class="add" onclick="exportJson()">Télécharger la sauvegarde</button></div>
+<div class="card"><b class="neg">Réinitialisation</b><div class="m">Action définitive. Pensez à télécharger une sauvegarde avant.</div><button class="add" style="background:var(--r)" onclick="resetData('cur')">Effacer les données en ${cu=='USD'?'dollars':'francs'}</button><button class="add" style="background:var(--r)" onclick="resetData('all')">Effacer toutes les données</button></div>`},
+histo(){const E=evts().filter(hok),i=E.filter(e=>e.g>0).reduce((s,e)=>s+e.m,0),o=E.filter(e=>e.g<0).reduce((s,e)=>s+e.m,0);
+return `<div class="dd"><button class="ddb" onclick="hopen=!hopen;render()"><span>Rubrique : <b>${HO.find(o=>o[0]==hs)[1]}</b></span><span>${hopen?'▲':'▼'}</span></button>${hopen?`<div class="ddl scroll">${HO.map(([k,v])=>`<button class="${k==hs?'on':''}" onclick="hs='${k}';hopen=false;render()">${v}</button>`).join('')}</div>`:''}</div>`+
+`<div class="card"><div class="row"><span class="m">Du</span><input type="date" value="${hf}" onchange="hf=this.value;render()"><span class="m">au</span><input type="date" value="${ht}" onchange="ht=this.value;render()"></div></div>`+
+stats([['Entrées',i,'pos'],['Sorties',o,'neg']])+`<div class="m" style="margin:8px 2px">${E.length} opération(s)</div><button class="add" onclick="pdf()">📄 Enregistrer en PDF</button>`+
+sc(E.map(e=>`<div class="card row"><div><b>${esc(e.l)}</b><div class="m">${e.d} · ${RB[e.s]}</div></div><div class="${e.g>0?'pos':e.g<0?'neg':''}">${e.g>0?'+':e.g<0?'−':''}${f(e.m)}</div></div>`).join(''))},
+moulin(){return acct('moulin','Recharge')+''},
+dettes(){return acct('dettes','Dette')},
+prets(){const rest=S.prets.reduce((s,x)=>s+sch(x).reduce((a,e,j)=>a+(x.pd&&x.pd[j]?0:e.t),0),0);
+return stats([['Reste à recevoir',rest]])+
+`<div class="card"><input id="a" placeholder="Nom du client"><input id="b" type="number" inputmode="decimal" placeholder="Somme prêtée"><input id="c" type="number" inputmode="numeric" placeholder="Nombre de mois (ex. 6)"><input id="e" type="number" step="0.1" value="10" placeholder="Taux %"><select id="g"><option value="m">Taux 10 % par mois (sur le capital)</option><option value="t">Taux 10 % au total</option></select><input id="d" type="date" value="${td()}"><button class="add" onclick="addP()">Créer l'échéancier</button></div>`+
+sc(S.prets.map((x,i)=>{const s=sch(x);const tot=s.reduce((a,e)=>a+e.t,0);return `<div class="card"><div class="row"><b>${esc(x.n)}</b><button class="x" onclick="del('prets',${i})">×</button></div><div class="m">Prêt ${f(x.m)} · ${x.mo} mois · ${x.r}% ${x.mode=='m'?'/mois':'total'} · à rembourser ${f(tot)}</div><table><tr><th>Échéance</th><th>Capital</th><th>Intérêt</th><th>Total</th><th>Payé</th></tr>${s.map((e,j)=>`<tr><td>${e.dt}</td><td>${f(e.c)}</td><td>${f(e.i)}</td><td><b>${f(e.t)}</b></td><td><input type="checkbox" style="width:auto;margin:0" ${x.pd&&x.pd[j]?'checked':''} onchange="tg(${i},${j})"></td></tr>`).join('')}</table></div>`}).reverse().join(''))}
+};
+function sch(x){const c=x.m/x.mo,i=x.mode=='m'?x.m*x.r/100:x.m*x.r/100/x.mo;return Array.from({length:x.mo},(_,j)=>{const d=new Date(x.d);d.setMonth(d.getMonth()+j+1);return{dt:d.toISOString().slice(0,10),c,i,t:c+i}})}
+function addCu(){const o=val('a'),q=+val('c'),u=+val('e');if(!(q>0)||!(u>0)){alert('Quantité et prix requis');return}S.commerce.push({t:o=='achat'?'achat':'vente',g:o,p:'Unités '+UN[un],r:un,q,u,d:val('d')});save();render()}
+function addCo(){const o=val('a'),q=+val('c'),u=+val('e');if(!val('b')||!(q>0)||!(u>0)){alert('Produit, quantité et prix requis');return}S.commerce.push({t:o=='achat'?'achat':'vente',g:o,p:val('b'),c:cs,q,u,d:val('d')});save();render()}
+function addP(){const m=+val('b'),mo=parseInt(val('c'));if(!val('a')||!(m>0)||!(mo>0)){alert('Nom, somme et nombre de mois requis');return}S.prets.push({n:val('a'),m,mo,r:+val('e'),mode:val('g'),d:val('d'),pd:[]});save();render()}
+function tg(i,j){const x=S.prets[i];x.pd=x.pd||[];x.pd[j]=!x.pd[j];save();render()}
+function acct(k,w){const mo=k=='moulin',L=S[k];
+const reste=x=>x.m-sum(x.p),last=L.length-1;
+const total=L.reduce((s,x)=>s+sum(x.p),0),manq=L.reduce((s,x,i)=>s+(mo&&i<last?Math.max(0,reste(x)):0),0),due=L.reduce((s,x)=>s+reste(x),0);
+const st=mo?stats([['Perçu',total,'pos'],['Manquants',manq,'neg'],['Reste en cours',L.length?Math.max(0,reste(L[last])):0]]):stats([['Total dû',due,'neg'],['Remboursé',total,'pos']]);
+const form=mo?`<input id="a" type="number" inputmode="decimal" placeholder="kW rechargés"><input id="b" type="number" inputmode="decimal" value="${cu=='FC'?130000:''}" placeholder="Montant attendu"><input id="d" type="date" value="${td()}"><button class="add" onclick="add('moulin',{l:val('a')+' kW',m:+val('b'),d:val('d'),p:[]})">Enregistrer la recharge</button>`
+:`<input id="a" placeholder="Nom du client"><input id="e" placeholder="Ce qu'il a pris"><input id="b" type="number" inputmode="decimal" placeholder="Montant de la dette"><input id="d" type="date" value="${td()}"><button class="add" onclick="if(!val('a')){alert('Nom requis');return}add('dettes',{l:val('a'),o:val('e'),m:+val('b'),d:val('d'),p:[]})">Enregistrer la dette</button>`;
+return st+`<div class="card">${form}</div>`+sc(L.map((x,i)=>{const r=reste(x),mq=mo&&i<last&&r>0;return `<div class="card"><div class="row"><div><b>${esc(x.l)}</b> <span class="m">${x.d}${x.o?' · '+esc(x.o):''}</span></div><button class="x" onclick="del('${k}',${i})">×</button></div><div>Attendu ${f(x.m)} · Perçu ${f(sum(x.p))}</div><div><b class="${r>0?'neg':'pos'}">Reste ${f(r)}</b> ${mq?'<span class="tag">Manquant</span>':r<=0?'<span class="pos">✔ Soldé</span>':''}</div>${r>0?`<div class="r"><input id="p${k}${i}" type="number" inputmode="decimal" placeholder="Montant ${mo?'perçu':'remboursé'}"><button onclick="pay('${k}',${i})">OK</button></div>`:''}</div>`}).reverse().join(''))}
+function pay(k,i){const m=+$('p'+k+i).value;if(!(m>0))return;S[k][i].p.push({d:td(),m});save();render()}
+function render(){document.body.classList.remove('auth');$('nav').innerHTML='';$('main').innerHTML=(tab=='home'?'':`<div class="bar"><button onclick="go('home')">← Accueil</button><b>${IC[tab]} ${TABS[tab]}</b></div>`)+cbar()+V[tab]()}
+const SBURL='https://ixnmiiyfffkamofvnrgt.supabase.co',SBKEY='sb_publishable_C963Hay02jzsjXb6uXMJnQ_q-adgsTV';
+let SB,mode='in',SNAP={FC:{},USD:{}},busy=false,again=false,EMAIL='';
+const strip=x=>{const{_id,...r}=x;return r};
+function status(t,m){const e=$('st');if(e)e.textContent=t=='ok'?'● Synchronisé':t=='sync'?'⏳ Synchronisation…':'⚠ '+(m||'Hors ligne')}
+function resetAll(){CURS.forEach(c=>{SNAP[c]={};KINDS.forEach(k=>{SETS[c][k]=[];SNAP[c][k]={}})});S=SETS[cu]}
+async function sync(){if(!SB)return;if(busy){again=true;return}busy=true;
+try{do{again=false;
+for(const c of CURS)for(const k of KINDS){const cur=SETS[c][k],snap=SNAP[c][k]||(SNAP[c][k]={});
+const news=cur.filter(x=>!x._id);
+if(news.length){news.forEach(x=>{x.cur=c});const{data,error}=await SB.from('records').insert(news.map(x=>({kind:k,data:strip(x)}))).select('id');if(error)throw error;news.forEach((x,i)=>{x._id=data[i].id;snap[x._id]=JSON.stringify(strip(x))})}
+for(const x of cur.slice()){if(x._id&&snap[x._id]!==JSON.stringify(strip(x))){const d=strip(x),{error}=await SB.from('records').update({data:d}).eq('id',x._id);if(error)throw error;snap[x._id]=JSON.stringify(d)}}
+const ids=new Set(cur.map(x=>x._id)),gone=Object.keys(snap).filter(id=>!ids.has(id));
+if(gone.length){const{error}=await SB.from('records').delete().in('id',gone);if(error)throw error;gone.forEach(id=>delete snap[id])}}
+}while(again);dirty=false;status('ok')}catch(e){status('err',e.message||'Hors ligne')}finally{busy=false}}
+async function load(){const{data,error}=await SB.from('records').select('id,kind,data').order('created_at',{ascending:true});if(error)throw error;
+resetAll();data.forEach(r=>{const c=r.data.cur==='USD'?'USD':'FC';if(!SETS[c][r.kind])return;SETS[c][r.kind].push({...r.data,_id:r.id});SNAP[c][r.kind][r.id]=JSON.stringify(r.data)})}
+const lc=()=>{try{return LOCAL&&!localStorage.getItem('suivi_imported')?KINDS.reduce((n,k)=>n+(LOCAL[k]||[]).length,0):0}catch(e){return 0}};
+const impBanner=()=>lc()?`<div class="card"><b>Données trouvées sur cet appareil</b><div class="m">${lc()} enregistrement(s) saisis avant la mise en ligne.</div><button class="add" onclick="imp()">Importer vers le cloud</button></div>`:'';
+function imp(){if(!confirm('Importer ces données dans votre compte en ligne ?'))return;KINDS.forEach(k=>(LOCAL[k]||[]).forEach(x=>SETS.FC[k].push(x)));try{localStorage.setItem('suivi_imported','1')}catch(e){}save();render()}
+function lock(){document.body.classList.add('auth');$('nav').innerHTML='';const up=mode=='up';$('main').innerHTML=`<div class="login"><div class="logo">E</div><h1>Ely Services</h1><p class="tg">Télécommunications &amp; transferts d’argent</p><div class="lcard"><h2>${up?'Créer votre compte':'Bon retour'}</h2><div class="m">${up?'Utilisez votre e-mail et choisissez un mot de passe.':'Connectez-vous pour accéder à votre espace.'}</div><label>E-mail</label><input id="lu" type="email" placeholder="vous@exemple.com" autocomplete="email"><label>Mot de passe</label><input id="lp" type="password" placeholder="Votre mot de passe" autocomplete="${up?'new-password':'current-password'}">${up?'<label>Confirmer le mot de passe</label><input id="lp2" type="password" placeholder="Répétez le mot de passe">':''}<button class="add" onclick="doAuth()">${up?'Créer le compte':'Se connecter'}</button><div id="le" class="err"></div><button class="lnk" onclick="mode='${up?'in':'up'}';lock()">${up?'J’ai déjà un compte':'Première fois ? Créer un compte'}</button></div><div class="foot">© Ely Services</div></div>`}
+const err=t=>{$('le').textContent=t};
+async function doAuth(){const em=val('lu'),pw=$('lp').value;if(!em||pw.length<6)return err('E-mail requis et mot de passe de 6 caractères minimum');
+if(mode=='up'&&pw!==$('lp2').value)return err('Les mots de passe ne correspondent pas');
+err('Patientez…');let r;try{r=mode=='up'?await SB.auth.signUp({email:em,password:pw}):await SB.auth.signInWithPassword({email:em,password:pw})}catch(e){return err('Connexion au serveur impossible')}
+if(r.error)return err(/invalid login/i.test(r.error.message)?'E-mail ou mot de passe incorrect':r.error.message);
+if(!r.data.session)return err('Compte créé. Confirmez votre e-mail, puis connectez-vous.');
+enter()}
+async function enter(){try{await load()}catch(e){alert('Chargement impossible : '+e.message)}try{const g=await SB.auth.getSession();EMAIL=(g.data.session&&g.data.session.user.email)||''}catch(e){}render();status('ok')}
+async function logout(){try{await SB.auth.signOut()}catch(e){}resetAll();mode='in';lock()}
+function init(){if(!window.supabase){lock();err('Connexion au serveur impossible. Vérifiez internet puis rechargez la page.');return}
+SB=window.supabase.createClient(SBURL,SBKEY);window.addEventListener('online',sync);
+document.addEventListener('visibilitychange',async()=>{if(document.visibilityState=='visible'&&SB&&!busy&&!dirty&&!document.body.classList.contains('auth')){try{await load();render()}catch(e){}}});
+SB.auth.getSession().then(({data})=>data.session?enter():lock()).catch(()=>lock())}
+document.addEventListener('DOMContentLoaded',init);
+</script></body></html>
